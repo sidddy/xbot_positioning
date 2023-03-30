@@ -221,6 +221,9 @@ void onPose(const xbot_msgs::AbsolutePose::ConstPtr &msg) {
     // TODO fuse with high covariance?
     if((msg->flags & (xbot_msgs::AbsolutePose::FLAG_GPS_RTK_FLOAT | xbot_msgs::AbsolutePose::FLAG_GPS_RTK_FIXED)) == 0) {
         ROS_INFO_STREAM_THROTTLE(1, "Dropped GPS update, since it's not RTK");
+        return;
+    }
+
     if(msg->position_accuracy > max_gps_accuracy) {
         ROS_INFO_STREAM_THROTTLE(1, "Dropped GPS update, since it's not accurate enough. Accuracy was: " << msg->position_accuracy << ", limit is:" << max_gps_accuracy);
         return;
